@@ -14,32 +14,32 @@ class Player(
     maxDamage = maxDamage
 ) {
     private var healCounter = 4
+    val playerHealCounter get() = healCounter
 
     fun heal () {
-        if (isAlive) {
-            if (healCounter > 0) {
-                if (currentHealth < maxHealth) {
-                    healCounter--
-                    val healValue =
-                        if (currentHealth + (0.3 * maxHealth).toInt() > maxHealth) {
-                            maxHealth - currentHealth
-                        } else {
-                            (0.3 * maxHealth).toInt()
-                        }
-                    currentHealth += healValue
-                    println("Player ${name} was healed by ${healValue} hp.\n" +
-                            "His current hp = ${currentHealth}.\n" +
-                            "Player ${name} can use the heal another ${healCounter} times.")
-                } else {
-                    println("Heal was not used. Player ${name} has full hp.")
-                }
-            } else {
-                println("Heal is not available. Player ${name} can no longer use the heal.")
-            }
-        } else {
-            println("Heal is not available. Player ${name} is dead.")
+        if (!isAlive) {
+            println("Heal is not available. Player $name is dead.")
+            return
         }
-    }
+        if (healCounter <= 0) {
+            println("Heal is not available. Player $name can no longer use the heal.")
+            return
+        }
+        if (currentHealth >= maxHealth) {
+            println("Heal was not used. Player $name has full hp.")
+            return
+        }
 
-    fun getHealCounter (): Int { return healCounter }
+        healCounter--
+        val healValue =
+            if (currentHealth + (0.3 * maxHealth).toInt() > maxHealth) {
+                maxHealth - currentHealth
+            } else {
+                (0.3 * maxHealth).toInt()
+            }
+        currentHealth += healValue
+        println("Player $name was healed by $healValue hp.")
+        println("His current hp = $currentHealth.")
+        println("Player $name can use the heal another $healCounter times.")
+    }
 }

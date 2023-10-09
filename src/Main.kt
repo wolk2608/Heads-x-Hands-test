@@ -3,24 +3,20 @@ fun main (args: Array<String>) {
     val monster: Monster = Monster(name = "Undead", attack = 3, defense = 4, maxHealth = 60, minDamage = 1, maxDamage = 6)
 
     println("Game beginning.")
-    println("Player characteristics: name ${player.getCreatureName()}, " +
-            "attack ${player.getCreatureAttack()}, " +
-            "defense ${player.getCreatureDefense()}, " +
-            "maximum health ${player.getCreatureMaxHealth()}, " +
-            "damage from ${player.getCreatureMinDamage()} to ${player.getCreatureMaxDamage()}.")
-    println("Monster characteristics: name ${monster.getCreatureName()}, " +
-            "attack ${monster.getCreatureAttack()}, " +
-            "defense ${monster.getCreatureDefense()}, " +
-            "maximum health ${monster.getCreatureMaxHealth()}, " +
-            "damage from ${monster.getCreatureMinDamage()} to ${monster.getCreatureMaxDamage()}.\n")
+    println("Player characteristics: name ${player.creatureName}, " +
+            "attack ${player.creatureAttack}, " +
+            "defense ${player.creatureDefense}, " +
+            "maximum health ${player.creatureMaxHealth}, " +
+            "damage from ${player.creatureMinDamage} to ${player.creatureMaxDamage}.")
+    println("Monster characteristics: name ${monster.creatureName}, " +
+            "attack ${monster.creatureAttack}, " +
+            "defense ${monster.creatureDefense}, " +
+            "maximum health ${monster.creatureMaxHealth}, " +
+            "damage from ${monster.creatureMinDamage} to ${monster.creatureMaxDamage}.\n")
 
-    while (monster.getCreatureIsAliveState() && player.getCreatureIsAliveState()) {
-        if (player.getHealCounter() > 0) {
-            if (player.getCreatureCurrentHealth() < player.getCreatureMaxHealth() * 0.7) {
+    while (monster.creatureIsAliveState && player.creatureIsAliveState) {
+        if (player.playerHealCounter > 0 && player.creatureCurrentHealth < player.creatureMaxHealth * 0.7) {
                 playerHealing(player)
-            } else {
-                playerAttack(player, monster)
-            }
         } else {
             playerAttack(player, monster)
         }
@@ -30,19 +26,19 @@ fun main (args: Array<String>) {
 }
 
 fun playerAttack (player: Player, creature: Creature) {
-    print("The player attacks!\n")
-    creature.takeDamage(player.dealDamage(creature.getCreatureDefense()))
+    println("The player attacks!")
+    creature.takeDamage(player.dealDamage(creature.creatureDefense))
     println()
 }
 
 fun monsterAttack (monster: Monster, creature: Creature) {
-    print("The monster attacks!\n")
-    creature.takeDamage(monster.dealDamage(creature.getCreatureDefense()))
+    println("The monster attacks!")
+    creature.takeDamage(monster.dealDamage(creature.creatureDefense))
     println()
 }
 
 fun playerHealing(player: Player) {
-    print("The player is healing.\n")
+    println("The player is healing.")
     player.heal()
     println()
 }

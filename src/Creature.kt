@@ -17,52 +17,51 @@ open class Creature(
         require(minDamage <= maxDamage)
     }
 
-    fun getCreatureName(): String { return name }
-    fun getCreatureAttack(): Int { return attack }
-    fun getCreatureDefense(): Int { return defense }
-    fun getCreatureMaxHealth(): Int { return maxHealth }
-    fun getCreatureMinDamage(): Int { return minDamage }
-    fun getCreatureMaxDamage(): Int { return maxDamage }
-    fun getCreatureCurrentHealth(): Int { return currentHealth }
-    fun getCreatureIsAliveState(): Boolean { return isAlive }
+    val creatureName get() = name
+    val creatureAttack get() = attack
+    val creatureDefense get() = defense
+    val creatureMaxHealth get() = maxHealth
+    val creatureMinDamage get() = minDamage
+    val creatureMaxDamage get() = maxDamage
+    val creatureCurrentHealth get() = currentHealth
+    val creatureIsAliveState get() = isAlive
 
     fun dealDamage(enemyDefence: Int): Int {
-        if (isAlive) {
-            val attackModifier = attack - enemyDefence + 1
-            for (roll in 1..attackModifier) {
-                val dice = (1..6).random()
-                if (dice >= 5) {
-                    val damage = (minDamage..maxDamage).random()
-                    println("The attack from ${name} dealt ${damage} damage.")
-                    return damage
-                }
-            }
-            println("The attack from ${name} missed.")
-        } else {
-            println("Attack is not available. Creature ${name} is dead.")
+        if (!isAlive) {
+            println("Attack is not available. Creature $name is dead.")
+            return 0
         }
+
+        val attackModifier = attack - enemyDefence + 1
+        for (roll in 1..attackModifier) {
+            val dice = (1..6).random()
+            if (dice >= 5) {
+                val damage = (minDamage..maxDamage).random()
+                println("The attack from $name dealt $damage damage.")
+                return damage
+            }
+        }
+
+        println("The attack from $name missed.")
         return 0
     }
 
     fun takeDamage(damage: Int) {
-        if (damage > 0) {
-            if (isAlive) {
-                if (currentHealth - damage <= 0) {
-                    currentHealth = 0
-                    isAlive = false
-                    println("The attack to creature ${name} deals ${damage} damage.\nCreature ${name} died.")
-                } else {
-                    currentHealth -= damage
-                    println("The attack to creature ${name} deals ${damage} damage.\nCreature ${name} is still alive.\nHis current hp = ${currentHealth}.")
-                }
-            } else {
-                println("The attack to creature ${name} has no effect. Creature ${name} is already dead.")
-            }
+        if (damage <= 0) {
+            return
+        }
+        if (!isAlive) {
+            println("The attack to creature $name has no effect. Creature $name is already dead.")
+            return
+        }
+
+        if (currentHealth - damage <= 0) {
+            currentHealth = 0
+            isAlive = false
+            println("The attack to creature $name deals $damage damage.\nCreature $name died.")
+        } else {
+            currentHealth -= damage
+            println("The attack to creature $name deals $damage damage.\nCreature $name is still alive.\nHis current hp = $currentHealth.")
         }
     }
 }
-
-// Все сущности должны быть написаны и спроектированы в ООП стиле. Объекты обязательно должны реагировать на некорректные аргументы методов.
-// В вашей программе обязательно должны получиться классы сущностей Игрок и Монстр. Наличие дополнительных классов по вашему желанию.
-//
-// Результатом должно стать приложение с реализацией классов и примером их использования.
